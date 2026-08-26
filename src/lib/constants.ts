@@ -100,15 +100,17 @@ export const EXPERIENCE_DATA = [
   },
 ];
 
-export const TECH_STACK = [
+export const TECH_STACK: Array<{ name: string; icon: string; glyph?: string }> = [
   { name: "JavaScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" },
   { name: "TypeScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" },
   { name: "Kotlin", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/kotlin/kotlin-original.svg" },
   { name: "Python", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" },
+  { name: "Pandas", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pandas/pandas-original.svg" },
   { name: "Java", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" },
   { name: "C", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg" },
   { name: "C++", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" },
   { name: "Lua", icon: "https://cdn.simpleicons.org/lua/a8a8ff" },
+  { name: "Dart", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/dart/dart-original.svg" },
   { name: "React", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" },
   { name: "Next.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg" },
   { name: "HTML5", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" },
@@ -116,13 +118,22 @@ export const TECH_STACK = [
   { name: "Tailwind CSS", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" },
   { name: "Bootstrap", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/bootstrap/bootstrap-original.svg" },
   { name: "Vite", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vite/vite-original.svg" },
-  { name: "Laravel", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/laravel/laravel-original.svg" },
+  { name: "PHP", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" },
+  { name: "REST API", icon: "" },
   { name: "Node.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg" },
   { name: "Flutter", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/flutter/flutter-original.svg" },
   { name: "MySQL", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" },
+  { name: "MariaDB", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mariadb/mariadb-original.svg" },
+  { name: "MongoDB", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg" },
   { name: "PostgreSQL", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" },
   { name: "Supabase", icon: "https://cdn.simpleicons.org/supabase/8b76ff" },
   { name: "Firebase", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/firebase/firebase-plain.svg" },
+  { name: "Docker", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" },
+  { name: "Scapy", icon: "", glyph: "Network" },
+  { name: "Requests", icon: "", glyph: "Globe" },
+  { name: "BeautifulSoup", icon: "", glyph: "FileHtml" },
+  { name: "Paramiko", icon: "", glyph: "LockKey" },
+  { name: "PyInstaller", icon: "", glyph: "Package" },
   { name: "Git", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" },
   { name: "GitHub", icon: "https://cdn.simpleicons.org/github/ffffff" },
   { name: "GitLab", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/gitlab/gitlab-original.svg" },
@@ -134,7 +145,17 @@ export const TECH_STACK = [
 export const SKILL_GROUPS: Array<{ label: string; names: string[] }> = [
   {
     label: "Languages",
-    names: ["JavaScript", "TypeScript", "Kotlin", "Python", "Java", "C", "C++", "Lua"],
+    names: [
+      "JavaScript",
+      "TypeScript",
+      "Kotlin",
+      "Python",
+      "Java",
+      "C",
+      "C++",
+      "Lua",
+      "Dart",
+    ],
   },
   {
     label: "Frameworks & Runtime",
@@ -146,18 +167,23 @@ export const SKILL_GROUPS: Array<{ label: string; names: string[] }> = [
       "Tailwind CSS",
       "Bootstrap",
       "Vite",
-      "Laravel",
+      "PHP",
+      "REST API",
       "Node.js",
       "Flutter",
     ],
   },
   {
     label: "Data & Cloud",
-    names: ["MySQL", "PostgreSQL", "Supabase", "Firebase"],
+    names: ["MySQL", "MariaDB", "MongoDB", "PostgreSQL", "Supabase", "Firebase", "Pandas"],
+  },
+  {
+    label: "Security & Scripting",
+    names: ["Scapy", "Requests", "BeautifulSoup", "Paramiko", "PyInstaller"],
   },
   {
     label: "Tools",
-    names: ["Git", "GitHub", "GitLab", "VS Code", "Postman", "Linux"],
+    names: ["Git", "GitHub", "GitLab", "VS Code", "Postman", "Linux", "Docker"],
   },
 ];
 

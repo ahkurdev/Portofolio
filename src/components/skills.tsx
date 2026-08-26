@@ -1,8 +1,25 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, type ComponentType } from "react";
+import {
+  Plugs,
+  Network,
+  Globe,
+  FileHtml,
+  LockKey,
+  Package,
+} from "@phosphor-icons/react";
 import { TECH_STACK, SKILL_GROUPS } from "@/lib/constants";
 import RevealHeadline from "@/components/reveal-headline";
+
+const GLYPHS: Record<string, ComponentType<{ size?: number; weight?: "bold"; className?: string }>> = {
+  Plugs,
+  Network,
+  Globe,
+  FileHtml,
+  LockKey,
+  Package,
+};
 
 export default function Skills() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -62,17 +79,24 @@ export default function Skills() {
                 {group.names.map((name) => {
                   const tech = TECH_STACK.find((t) => t.name === name);
                   if (!tech) return null;
+                  const Glyph = tech.glyph ? GLYPHS[tech.glyph] : undefined;
                   return (
                     <div
                       key={name}
                       className="group inline-flex items-center gap-2.5 pl-3 pr-4 py-2.5 rounded-xl glass cursor-default transition-all duration-300 hover:border-primary/35 hover:-translate-y-0.5"
                     >
-                      <img
-                        src={tech.icon}
-                        alt={`${tech.name} logo`}
-                        className="w-5 h-5 object-contain"
-                        loading="lazy"
-                      />
+                      {tech.icon ? (
+                        <img
+                          src={tech.icon}
+                          alt={`${tech.name} logo`}
+                          className="w-5 h-5 object-contain"
+                          loading="lazy"
+                        />
+                      ) : Glyph ? (
+                        <Glyph size={16} weight="bold" className="text-primary-light" />
+                      ) : (
+                        <Plugs size={16} weight="bold" className="text-primary-light" />
+                      )}
                       <span className="font-sans text-sm font-medium text-text-secondary group-hover:text-text transition-colors duration-300">
                         {tech.name}
                       </span>

@@ -54,12 +54,14 @@ export default function Marquee() {
         {doubled.map((tech, i) => (
           <div key={i} className="flex items-center gap-3 mx-7 shrink-0">
             <span className="w-1 h-1 rounded-full bg-primary/60" />
-            <img
-              src={tech.icon}
-              alt=""
-              className="w-4 h-4 object-contain opacity-45"
-              loading="lazy"
-            />
+            {tech.icon && (
+              <img
+                src={tech.icon}
+                alt=""
+                className="w-4 h-4 object-contain opacity-45"
+                loading="lazy"
+              />
+            )}
             <span className="font-mono text-xs text-muted-foreground tracking-wide">
               {tech.name}
             </span>
