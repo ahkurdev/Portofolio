@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import { motionEnabled } from "@/lib/motion";
 
 const SEGMENTS = 32;
 const MIN_DISPLAY_MS = 1200;
@@ -26,7 +27,7 @@ export default function LoadingScreen({
   const segmentsRef = useRef<Array<HTMLSpanElement | null>>([]);
 
   useEffect(() => {
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduced = !motionEnabled();
 
     const state = {
       val: 0,

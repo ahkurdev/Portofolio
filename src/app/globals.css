@@ -184,31 +184,103 @@ h1:hover .line-outline .hero-letter {
 
 section[id] { scroll-margin-top: 88px; }
 
+.ambient-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.ambient-glow {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(130px);
+}
+.ambient-glow-1 {
+  width: 540px;
+  height: 540px;
+  background: #6350e6;
+  top: -140px;
+  left: -160px;
+  opacity: 0.15;
+}
+.ambient-glow-2 {
+  width: 660px;
+  height: 660px;
+  background: #8b76ff;
+  top: 36%;
+  right: -240px;
+  opacity: 0.09;
+}
+.ambient-glow-3 {
+  width: 500px;
+  height: 500px;
+  background: #4c3ac9;
+  bottom: -180px;
+  left: 20%;
+  opacity: 0.11;
+}
+.ambient-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, black 30%, transparent 78%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, black 30%, transparent 78%);
+}
+
+.ghost-index {
+  position: absolute;
+  top: -0.12em;
+  right: -0.04em;
+  font-family: var(--font-sans);
+  font-size: clamp(8rem, 22vw, 19rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(171, 155, 255, 0.11);
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  html:not([data-motion="on"]) *,
+  html:not([data-motion="on"]) *::before,
+  html:not([data-motion="on"]) *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
   }
 
-  .scroll-reveal,
-  .js .scroll-reveal:not(.visible) {
-    opacity: 1 !important;
+  html:not([data-motion="on"]) .scroll-reveal {
+    transition: opacity 0.5s ease !important;
     transform: none !important;
     filter: none !important;
   }
-
-  .js .reveal-words .word-inner {
-    transform: none !important;
-    filter: none !important;
-    transition: none !important;
+  html:not([data-motion="on"]) .js .scroll-reveal:not(.visible) {
+    opacity: 0;
+  }
+  html:not([data-motion="on"]) .scroll-reveal.visible {
+    opacity: 1;
   }
 
-  h1:hover .line-lift .hero-letter,
-  .hero-letter {
+  html:not([data-motion="on"]) .js .reveal-words .word-inner {
+    transform: none !important;
+    filter: none !important;
+    transition: opacity 0.5s ease !important;
+    opacity: 0;
+  }
+  html:not([data-motion="on"]) .js .reveal-words.visible .word-inner {
+    opacity: 1;
+  }
+
+  html:not([data-motion="on"]) h1:hover .line-lift .hero-letter,
+  html:not([data-motion="on"]) .hero-letter {
     transform: none !important;
   }
 }

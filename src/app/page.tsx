@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { useGitHub } from "@/lib/github";
 
 import ScrollProgress from "@/components/scroll-progress";
+import MotionToggle from "@/components/motion-toggle";
 import Navbar from "@/components/navbar";
 import Hero from "@/components/hero";
 import Marquee from "@/components/marquee";
@@ -49,7 +50,14 @@ export default function Home() {
   return (
     <>
       <div className="noise-overlay" aria-hidden="true" />
+      <div className="ambient-layer" aria-hidden="true">
+        <div className="ambient-glow ambient-glow-1" />
+        <div className="ambient-glow ambient-glow-2" />
+        <div className="ambient-glow ambient-glow-3" />
+        <div className="ambient-grid" />
+      </div>
       <ScrollProgress />
+      <MotionToggle />
       <Navbar />
       <main className="relative z-10 flex flex-col overflow-x-hidden">
         <Hero />

@@ -51,13 +51,40 @@ export default function GitHubAnalytics({
   }, [languages, sorted, total]);
 
   return (
-    <section ref={ref} className="py-28 sm:py-36 px-5 sm:px-6 relative z-10">
-      <div className="max-w-6xl mx-auto">
+    <section ref={ref} className="py-28 sm:py-36 px-5 sm:px-6 relative z-10 overflow-hidden">
+      <span className="ghost-index" aria-hidden="true">
+        04
+      </span>
+
+      <div className="max-w-6xl mx-auto relative z-10">
         <div className="mb-14 sm:mb-20">
           <RevealHeadline
             text="Activity you can verify"
             className="font-sans font-extrabold text-[clamp(2.25rem,6vw,4.5rem)] leading-[1.02] tracking-[-0.035em] text-text max-w-2xl"
           />
+        </div>
+
+        <div className="activity-card scroll-reveal mb-5">
+          <div className="glass rounded-3xl p-7 sm:p-9">
+            <div className="flex justify-between items-baseline mb-6">
+              <h3 className="font-sans text-lg font-bold text-text">
+                Contribution calendar
+              </h3>
+              <span className="font-mono text-[10px] text-muted-foreground tracking-[0.1em] uppercase">
+                Last year · live
+              </span>
+            </div>
+            <img
+              src="https://ghchart.rshah.org/8b76ff/ahkurdev"
+              alt="GitHub contribution calendar for ahkurdev"
+              className="w-full h-auto block"
+              loading="lazy"
+              onError={(e) => {
+                const card = e.currentTarget.closest("div");
+                if (card) card.style.display = "none";
+              }}
+            />
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
@@ -75,6 +102,9 @@ export default function GitHubAnalytics({
                       <div className="flex justify-between items-baseline mb-2">
                         <span className="font-sans text-sm font-medium text-text-secondary">
                           {lang}
+                          <span className="font-mono text-[10px] text-muted-foreground ml-2.5">
+                            {count} {count === 1 ? "repo" : "repos"}
+                          </span>
                         </span>
                         <span className="font-mono text-xs text-muted-foreground tabular-nums">
                           {pct}%

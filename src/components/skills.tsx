@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect } from "react";
-import { TECH_STACK } from "@/lib/constants";
+import { TECH_STACK, SKILL_GROUPS } from "@/lib/constants";
 import RevealHeadline from "@/components/reveal-headline";
 
 export default function Skills() {
@@ -10,7 +10,7 @@ export default function Skills() {
   useEffect(() => {
     if (!sectionRef.current) return;
 
-    const cards = sectionRef.current.querySelectorAll<HTMLElement>(".skill-card");
+    const groups = sectionRef.current.querySelectorAll<HTMLElement>(".skill-group");
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -18,10 +18,7 @@ export default function Skills() {
           if (entry.isIntersecting) {
             const el = entry.target as HTMLElement;
             el.classList.add("visible");
-            setTimeout(() => {
-              el.style.transitionDelay = "0ms";
-              el.classList.add("revealed");
-            }, 1400);
+            setTimeout(() => el.classList.add("revealed"), 1200);
             observer.unobserve(entry.target);
           }
         });
@@ -29,9 +26,9 @@ export default function Skills() {
       { threshold: 0.1, rootMargin: "0px 0px -10% 0px" }
     );
 
-    cards.forEach((card, i) => {
-      card.style.transitionDelay = `${Math.min(i * 45, 600)}ms`;
-      observer.observe(card);
+    groups.forEach((group, i) => {
+      group.style.transitionDelay = `${Math.min(i * 70, 400)}ms`;
+      observer.observe(group);
     });
     return () => observer.disconnect();
   }, []);
@@ -40,9 +37,13 @@ export default function Skills() {
     <section
       ref={sectionRef}
       id="skills"
-      className="py-28 sm:py-36 px-5 sm:px-6 relative z-10"
+      className="py-28 sm:py-36 px-5 sm:px-6 relative z-10 overflow-hidden"
     >
-      <div className="max-w-5xl mx-auto">
+      <span className="ghost-index" aria-hidden="true">
+        03
+      </span>
+
+      <div className="max-w-6xl mx-auto relative z-10">
         <div className="mb-14 sm:mb-20">
           <RevealHeadline
             text="The toolbox behind the work"
@@ -50,21 +51,35 @@ export default function Skills() {
           />
         </div>
 
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
-          {TECH_STACK.map((tech) => (
-            <div
-              key={tech.name}
-              className="skill-card scroll-reveal group relative p-4 sm:p-5 rounded-2xl glass flex flex-col items-center justify-center gap-2.5 transition-all duration-300 hover:border-primary/35 hover:-translate-y-1 cursor-default overflow-hidden"
-            >
-              <img
-                src={tech.icon}
-                alt={`${tech.name} logo`}
-                className="w-8 h-8 sm:w-9 sm:h-9 object-contain relative z-10 transition-transform duration-500 group-hover:scale-110"
-                loading="lazy"
-              />
-              <span className="font-mono text-[11px] text-muted-foreground font-medium group-hover:text-text transition-colors duration-300 relative z-10 text-center">
-                {tech.name}
-              </span>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+          {SKILL_GROUPS.map((group) => (
+            <div key={group.label} className="skill-group scroll-reveal">
+              <div className="font-mono text-[11px] text-primary-light tracking-[0.16em] uppercase mb-5 flex items-center gap-3">
+                {group.label}
+                <span className="flex-1 h-px bg-white/[0.07]" />
+              </div>
+              <div className="flex flex-wrap gap-2.5">
+                {group.names.map((name) => {
+                  const tech = TECH_STACK.find((t) => t.name === name);
+                  if (!tech) return null;
+                  return (
+                    <div
+                      key={name}
+                      className="group inline-flex items-center gap-2.5 pl-3 pr-4 py-2.5 rounded-xl glass cursor-default transition-all duration-300 hover:border-primary/35 hover:-translate-y-0.5"
+                    >
+                      <img
+                        src={tech.icon}
+                        alt={`${tech.name} logo`}
+                        className="w-5 h-5 object-contain"
+                        loading="lazy"
+                      />
+                      <span className="font-sans text-sm font-medium text-text-secondary group-hover:text-text transition-colors duration-300">
+                        {tech.name}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           ))}
         </div>

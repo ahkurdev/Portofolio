@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motionEnabled } from "@/lib/motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -122,9 +123,7 @@ export default function HeroScene() {
     const container = containerRef.current;
     if (!container) return;
 
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
+    const reduced = !motionEnabled();
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
@@ -150,7 +149,7 @@ export default function HeroScene() {
 
     const uniforms = {
       uTime: { value: 0 },
-      uIntensity: { value: prefersReducedMotion ? 0.18 : 0.32 },
+      uIntensity: { value: reduced ? 0.18 : 0.32 },
       uColorDeep: { value: new THREE.Color("#241b52") },
       uColorPrimary: { value: new THREE.Color("#8b76ff") },
       uColorRim: { value: new THREE.Color("#c4b8ff") },
@@ -173,7 +172,7 @@ export default function HeroScene() {
     });
     const shell = new THREE.Mesh(shellGeo, shellMat);
 
-    const particleCount = prefersReducedMotion ? 0 : isMobile ? 450 : 900;
+    const particleCount = reduced ? 0 : isMobile ? 450 : 900;
     const positions = new Float32Array(particleCount * 3);
     const colors = new Float32Array(particleCount * 3);
     const cViolet = new THREE.Color("#8b76ff");
@@ -225,17 +224,16 @@ export default function HeroScene() {
     };
 
     let scrollProgress = 0;
-    let st: ScrollTrigger | undefined;
-    if (!prefersReducedMotion) {
-      st = ScrollTrigger.create({
-        trigger: "#about",
-        start: "top top",
-        end: "bottom top",
-        scrub: true,
-        onUpdate: (self) => {
-          scrollProgress = self.progress;
-        },
-      });
+    const st = ScrollTrigger.create({
+      trigger: "#about",
+      start: "top top",
+      end: "bottom top",
+      scrub: true,
+      onUpdate: (self) => {
+        scrollProgress = self.progress;
+      },
+    });
+    if (!reduced) {
       window.addEventListener("pointermove", onPointerMove, { passive: true });
     }
 
@@ -287,22 +285,32 @@ export default function HeroScene() {
       }
     };
 
-    if (prefersReducedMotion) {
-      timer.update();
-      renderFrame();
-    } else {
+    let motionOn = !reduced;
+    if (motionOn) {
       const tick = () => {
         frame = requestAnimationFrame(tick);
         if (!running) return;
+        if (!motionEnabled()) {
+          if (motionOn) {
+            motionOn = false;
+            timer.update();
+            renderFrame();
+          }
+          return;
+        }
+        motionOn = true;
         timer.update();
         renderFrame();
       };
       tick();
+    } else {
+      timer.update();
+      renderFrame();
     }
 
     return () => {
       cancelAnimationFrame(frame);
-      st?.kill();
+      st.kill();
       io.disconnect();
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("resize", onResize);

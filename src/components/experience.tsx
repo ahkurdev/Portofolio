@@ -58,9 +58,13 @@ export default function Experience() {
     <section
       ref={sectionRef}
       id="experience"
-      className="py-28 sm:py-36 px-5 sm:px-6 relative z-10"
+      className="py-28 sm:py-36 px-5 sm:px-6 relative z-10 overflow-hidden"
     >
-      <div className="max-w-4xl mx-auto">
+      <span className="ghost-index" aria-hidden="true">
+        02
+      </span>
+
+      <div className="max-w-4xl mx-auto relative z-10">
         <div className="mb-16 sm:mb-24">
           <RevealHeadline
             text="Systems work under real load"

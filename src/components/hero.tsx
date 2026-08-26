@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowRight, GithubLogo } from "@phosphor-icons/react";
 import { GITHUB_USERNAME } from "@/lib/constants";
+import { motionEnabled } from "@/lib/motion";
 import HeroScene from "@/components/hero-scene";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -21,7 +22,14 @@ export default function Hero() {
       setPending(false);
 
       if (!sectionRef.current) return;
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      if (!motionEnabled()) {
+        gsap.fromTo(
+          photoRef.current,
+          { autoAlpha: 0 },
+          { autoAlpha: 1, duration: 0.6, ease: "power1.out" }
+        );
+        return;
+      }
 
       requestAnimationFrame(() => {
         const ctx = gsap.context(() => {
@@ -34,6 +42,19 @@ export default function Hero() {
               ease: "power4.out",
               stagger: 0.12,
               delay: 0.15,
+            }
+          );
+
+          gsap.fromTo(
+            photoRef.current,
+            { autoAlpha: 0, x: 90, scale: 1.05 },
+            {
+              autoAlpha: 1,
+              x: 0,
+              scale: 1,
+              duration: 1.25,
+              ease: "power3.out",
+              delay: 0.45,
             }
           );
         }, sectionRef);
@@ -73,18 +94,6 @@ export default function Hero() {
       <HeroScene />
 
       <div className="w-full max-w-7xl mx-auto px-5 sm:px-6 relative z-20 pt-24 pb-16 sm:pb-20">
-        <p
-          data-hero-anim
-          className="font-mono text-xs text-primary-light tracking-[0.14em] uppercase mb-6 flex items-center gap-2.5"
-          style={{ animation: "heroFadeUp 0.6s ease-out 0.25s both" }}
-        >
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-60" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
-          </span>
-          Open to work — freelance and full-time
-        </p>
-
         <h1 className="font-sans font-extrabold leading-[0.92] tracking-[-0.045em] text-text mb-7 select-none cursor-default">
           <span className="block overflow-hidden pb-1">
             <span
@@ -159,12 +168,8 @@ export default function Hero() {
         </div>
       </div>
 
-      <div
-        data-hero-anim
-        className="absolute top-0 right-0 w-[52%] md:w-[42%] h-full z-[1] pointer-events-none"
-        style={{ animation: "heroPhotoSlide 1.3s ease-out 0.4s both" }}
-      >
-        <div ref={photoRef} className="w-full h-full">
+      <div className="absolute top-0 right-0 w-[52%] md:w-[42%] h-full z-[1] pointer-events-none">
+        <div ref={photoRef} className="w-full h-full invisible">
           <img
             src="/allan.png"
             alt="Portrait of Ahmad Kurniawan"

@@ -119,6 +119,25 @@ export const TECH_STACK = [
   { name: "Git", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" },
 ];
 
+export const SKILL_GROUPS: Array<{ label: string; names: string[] }> = [
+  {
+    label: "Languages",
+    names: ["JavaScript", "TypeScript", "Kotlin", "Python", "Java", "C++", "Lua"],
+  },
+  {
+    label: "Frameworks & Runtime",
+    names: ["React", "Next.js", "Node.js", "Flutter"],
+  },
+  {
+    label: "Data & Cloud",
+    names: ["MySQL", "PostgreSQL", "Supabase", "Firebase"],
+  },
+  {
+    label: "Tools",
+    names: ["Git", "GitHub"],
+  },
+];
+
 export const LANG_COLORS: Record<string, string> = {
   Kotlin: "#a97bff",
   TypeScript: "#3178c6",

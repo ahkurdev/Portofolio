@@ -3,7 +3,7 @@
 import { useRef, useEffect } from "react";
 import { ArrowUpRight, Star } from "@phosphor-icons/react";
 import { ProjectItem } from "@/lib/github";
-import { GITHUB_USERNAME } from "@/lib/constants";
+import { GITHUB_USERNAME, LANG_COLORS } from "@/lib/constants";
 import RevealHeadline from "@/components/reveal-headline";
 
 export default function Projects({ repos }: { repos: ProjectItem[] }) {
@@ -31,7 +31,10 @@ export default function Projects({ repos }: { repos: ProjectItem[] }) {
       { threshold: 0.1, rootMargin: "0px 0px -15% 0px" }
     );
 
-    rows.forEach((row) => observer.observe(row));
+    rows.forEach((row, i) => {
+      row.style.transitionDelay = `${Math.min(i * 80, 400)}ms`;
+      observer.observe(row);
+    });
 
     return () => observer.disconnect();
   }, [repos]);
@@ -40,9 +43,13 @@ export default function Projects({ repos }: { repos: ProjectItem[] }) {
     <section
       ref={sectionRef}
       id="projects"
-      className="py-28 sm:py-36 px-5 sm:px-6 relative z-10"
+      className="py-28 sm:py-36 px-5 sm:px-6 relative z-10 overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto">
+      <span className="ghost-index" aria-hidden="true">
+        01
+      </span>
+
+      <div className="max-w-7xl mx-auto relative z-10">
         <div className="mb-14 sm:mb-20">
           <p className="font-mono text-xs text-primary-light tracking-[0.14em] uppercase mb-5">
             Selected work
@@ -60,12 +67,9 @@ export default function Projects({ repos }: { repos: ProjectItem[] }) {
               href={repo.html_url}
               target="_blank"
               rel="noopener noreferrer"
-              className={`project-row scroll-reveal group block no-underline border-t border-white/[0.06] transition-colors duration-300 hover:bg-white/[0.02] ${
-                i === 0 ? "border-t !border-t-white/[0.09]" : ""
-              }`}
-              style={{ transitionDelay: `${i * 60}ms` }}
+              className="project-row scroll-reveal group block no-underline border-t border-white/[0.06] transition-colors duration-300 hover:bg-white/[0.02]"
             >
-              <div className="flex flex-col lg:flex-row lg:items-start gap-4 lg:gap-10 px-2 sm:px-4 py-9 sm:py-12">
+              <div className="flex flex-col lg:flex-row lg:items-start gap-6 lg:gap-10 px-2 sm:px-4 py-9 sm:py-12">
                 <span className="font-mono text-xs text-muted-foreground pt-2 lg:pt-4 shrink-0 w-8">
                   {String(i + 1).padStart(2, "0")}
                 </span>
@@ -92,12 +96,38 @@ export default function Projects({ repos }: { repos: ProjectItem[] }) {
                       </span>
                     )}
                   </div>
+                  {repo.topics.length > 0 && (
+                    <div className="font-mono text-[10px] text-muted-foreground tracking-[0.08em] uppercase mt-4">
+                      {repo.topics.slice(0, 4).join(" · ")}
+                    </div>
+                  )}
+                </div>
+
+                <div className="hidden md:block w-52 xl:w-60 shrink-0">
+                  <div className="rounded-xl overflow-hidden border border-white/[0.08] transition-all duration-500 group-hover:border-primary/35 group-hover:-translate-y-1">
+                    <img
+                      src={`https://opengraph.githubassets.com/1/${GITHUB_USERNAME}/${repo.repo}`}
+                      alt={`${repo.title} repository card`}
+                      className="w-full h-auto block"
+                      loading="lazy"
+                      onError={(e) => {
+                        const wrap = e.currentTarget.parentElement;
+                        if (wrap) wrap.style.display = "none";
+                      }}
+                    />
+                  </div>
                 </div>
 
                 <div className="flex lg:flex-col items-center lg:items-end justify-between gap-3 lg:gap-4 shrink-0 pt-1">
                   <div className="flex items-center gap-4">
                     {repo.language && (
-                      <span className="font-mono text-xs text-text-secondary">
+                      <span className="flex items-center gap-1.5 font-mono text-xs text-text-secondary">
+                        <span
+                          className="w-2 h-2 rounded-full"
+                          style={{
+                            background: LANG_COLORS[repo.language] || "#8b76ff",
+                          }}
+                        />
                         {repo.language}
                       </span>
                     )}
@@ -106,6 +136,11 @@ export default function Projects({ repos }: { repos: ProjectItem[] }) {
                       {repo.stars}
                     </span>
                   </div>
+                  {repo.updatedAt && (
+                    <span className="font-mono text-[10px] text-muted-foreground tracking-[0.08em] uppercase">
+                      Updated {repo.updatedAt}
+                    </span>
+                  )}
                   <div className="flex items-center gap-3">
                     {repo.demo && (
                       <span className="font-mono text-[11px] px-2.5 py-1 rounded-full bg-primary/15 border border-primary/30 text-primary-light">

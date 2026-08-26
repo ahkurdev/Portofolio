@@ -3,6 +3,7 @@
 import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { TECH_STACK } from "@/lib/constants";
+import { motionEnabled } from "@/lib/motion";
 
 export default function Marquee() {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -11,35 +12,40 @@ export default function Marquee() {
   useEffect(() => {
     if (!trackRef.current) return;
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    let tween: gsap.core.Tween | undefined;
     const ctx = gsap.context(() => {
-      tween = gsap.to(trackRef.current, {
+      const tween = gsap.to(trackRef.current, {
         x: "-50%",
         duration: 40,
         ease: "none",
         repeat: -1,
       });
+
+      let smoothed = 1;
+      const tick = () => {
+        if (!motionEnabled()) {
+          if (smoothed !== 0) {
+            smoothed = 0;
+            tween.timeScale(0);
+          }
+          return;
+        }
+        const lenis = (window as unknown as { __lenis?: { velocity: number } })
+          .__lenis;
+        const raw = lenis?.velocity;
+        const velocity =
+          typeof raw === "number" && Number.isFinite(raw) ? raw : 0;
+        const target = gsap.utils.clamp(1, 5, 1 + Math.abs(velocity) * 0.06);
+        smoothed += (target - smoothed) * 0.08;
+        tween.timeScale(smoothed);
+      };
+
+      gsap.ticker.add(tick);
+      return () => {
+        gsap.ticker.remove(tick);
+      };
     });
 
-    let smoothed = 1;
-    const tick = () => {
-      if (!tween) return;
-      const lenis = (window as unknown as { __lenis?: { velocity: number } })
-        .__lenis;
-      const velocity = lenis?.velocity ?? 0;
-      const target = gsap.utils.clamp(-4, 6, 1 + velocity * 0.06);
-      smoothed += (target - smoothed) * 0.08;
-      tween.timeScale(smoothed);
-    };
-
-    gsap.ticker.add(tick);
-
-    return () => {
-      gsap.ticker.remove(tick);
-      ctx.revert();
-    };
+    return () => ctx.revert();
   }, []);
 
   return (

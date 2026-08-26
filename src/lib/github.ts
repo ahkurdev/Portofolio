@@ -31,6 +31,14 @@ export interface ProjectItem {
   language: string | null;
   stars: number;
   topics: string[];
+  updatedAt?: string;
+}
+
+function formatDate(iso?: string): string | undefined {
+  if (!iso) return undefined;
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return undefined;
+  return d.toLocaleDateString("en-US", { month: "short", year: "numeric" });
 }
 
 function fallbackProjects(): ProjectItem[] {
@@ -46,6 +54,7 @@ function fallbackProjects(): ProjectItem[] {
     language: p.tags[0] ?? null,
     stars: p.fallbackStars,
     topics: [],
+    updatedAt: p.repo === "DOT-LAYER" ? "Aug 2026" : "Aug 2026",
   }));
 }
 
@@ -78,7 +87,7 @@ export function useGitHub() {
         const langCount: Record<string, number> = {};
         const repoMap = new Map<
           string,
-          { stars: number; language: string | null; topics: string[] }
+          { stars: number; language: string | null; topics: string[]; updatedAt?: string }
         >();
 
         if (reposRes.ok) {
@@ -88,6 +97,7 @@ export function useGitHub() {
             language: string | null;
             topics?: string[];
             fork: boolean;
+            updated_at?: string;
           }> = await reposRes.json();
 
           data.forEach((r) => {
@@ -100,6 +110,7 @@ export function useGitHub() {
               stars: r.stargazers_count ?? 0,
               language: r.language,
               topics: r.topics ?? [],
+              updatedAt: r.updated_at,
             });
           });
 
@@ -115,8 +126,10 @@ export function useGitHub() {
         }
 
         if (!cancelled) {
+          const fallback = fallbackProjects();
           const enriched = CURATED_PROJECTS.map((p) => {
             const live = repoMap.get(p.repo);
+            const fb = fallback.find((f) => f.id === p.repo);
             return {
               id: p.repo,
               repo: p.repo,
@@ -129,6 +142,7 @@ export function useGitHub() {
               language: live?.language ?? p.tags[0],
               stars: live?.stars ?? p.fallbackStars,
               topics: live?.topics ?? [],
+              updatedAt: formatDate(live?.updatedAt) ?? fb?.updatedAt,
             };
           });
           setProjects(enriched);
