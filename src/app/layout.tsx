@@ -67,6 +67,9 @@ export const metadata: Metadata = {
     },
   },
   icons: { icon: "/favicon.svg" },
+  verification: {
+    google: "8onoqJ1MluGXBQylpQ8HMsT3FeMrQJuKYxqF_KbFeIM",
+  },
 };
 
 export const viewport: Viewport = {
