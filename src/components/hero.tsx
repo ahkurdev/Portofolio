@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, type CSSProperties } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowRight, GithubLogo } from "@phosphor-icons/react";
@@ -85,21 +85,37 @@ export default function Hero() {
           Open to work — freelance and full-time
         </p>
 
-        <h1 className="font-sans font-extrabold leading-[0.92] tracking-[-0.045em] text-text mb-7 select-none">
+        <h1 className="font-sans font-extrabold leading-[0.92] tracking-[-0.045em] text-text mb-7 select-none cursor-default">
           <span className="block overflow-hidden pb-1">
             <span
               ref={line1Ref}
-              className="block text-[clamp(3rem,10vw,8rem)] will-change-transform"
+              className="line-lift block text-[clamp(3rem,10vw,8rem)] will-change-transform"
             >
-              AHMAD
+              {"AHMAD".split("").map((ch, i) => (
+                <span
+                  key={i}
+                  className="hero-letter"
+                  style={{ "--hd": `${i * 35}ms` } as CSSProperties}
+                >
+                  {ch}
+                </span>
+              ))}
             </span>
           </span>
           <span className="block overflow-hidden pb-2">
             <span
               ref={line2Ref}
-              className="block text-outline text-[clamp(3rem,10vw,8rem)] will-change-transform"
+              className="line-outline block text-[clamp(3rem,10vw,8rem)] will-change-transform"
             >
-              KURNIAWAN
+              {"KURNIAWAN".split("").map((ch, i) => (
+                <span
+                  key={i}
+                  className="hero-letter"
+                  style={{ "--hd": `${i * 28}ms` } as CSSProperties}
+                >
+                  {ch}
+                </span>
+              ))}
             </span>
           </span>
         </h1>

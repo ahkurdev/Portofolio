@@ -2,6 +2,7 @@
 
 import { useRef, useEffect } from "react";
 import { TECH_STACK } from "@/lib/constants";
+import RevealHeadline from "@/components/reveal-headline";
 
 export default function Skills() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -15,7 +16,12 @@ export default function Skills() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
+            const el = entry.target as HTMLElement;
+            el.classList.add("visible");
+            setTimeout(() => {
+              el.style.transitionDelay = "0ms";
+              el.classList.add("revealed");
+            }, 1400);
             observer.unobserve(entry.target);
           }
         });
@@ -23,7 +29,10 @@ export default function Skills() {
       { threshold: 0.1, rootMargin: "0px 0px -10% 0px" }
     );
 
-    cards.forEach((card) => observer.observe(card));
+    cards.forEach((card, i) => {
+      card.style.transitionDelay = `${Math.min(i * 45, 600)}ms`;
+      observer.observe(card);
+    });
     return () => observer.disconnect();
   }, []);
 
@@ -35,9 +44,10 @@ export default function Skills() {
     >
       <div className="max-w-5xl mx-auto">
         <div className="mb-14 sm:mb-20">
-          <h2 className="font-sans font-extrabold text-[clamp(2.25rem,6vw,4.5rem)] leading-[1.02] tracking-[-0.035em] text-text max-w-2xl text-balance">
-            The toolbox behind the work
-          </h2>
+          <RevealHeadline
+            text="The toolbox behind the work"
+            className="font-sans font-extrabold text-[clamp(2.25rem,6vw,4.5rem)] leading-[1.02] tracking-[-0.035em] text-text max-w-2xl"
+          />
         </div>
 
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
@@ -45,7 +55,6 @@ export default function Skills() {
             <div
               key={tech.name}
               className="skill-card scroll-reveal group relative p-4 sm:p-5 rounded-2xl glass flex flex-col items-center justify-center gap-2.5 transition-all duration-300 hover:border-primary/35 hover:-translate-y-1 cursor-default overflow-hidden"
-              style={{ transitionDelay: "0s" }}
             >
               <img
                 src={tech.icon}

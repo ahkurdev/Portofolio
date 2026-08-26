@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { EXPERIENCE_DATA } from "@/lib/constants";
+import RevealHeadline from "@/components/reveal-headline";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -61,9 +62,10 @@ export default function Experience() {
     >
       <div className="max-w-4xl mx-auto">
         <div className="mb-16 sm:mb-24">
-          <h2 className="font-sans font-extrabold text-[clamp(2.25rem,6vw,4.5rem)] leading-[1.02] tracking-[-0.035em] text-text mb-5 max-w-2xl text-balance">
-            Systems work under real load
-          </h2>
+          <RevealHeadline
+            text="Systems work under real load"
+            className="font-sans font-extrabold text-[clamp(2.25rem,6vw,4.5rem)] leading-[1.02] tracking-[-0.035em] text-text mb-5 max-w-2xl"
+          />
           <p className="font-sans text-text-secondary text-sm sm:text-base max-w-xl leading-relaxed">
             My foundation came from live community platforms: real users,
             persistent data, exploit pressure, and performance problems that had

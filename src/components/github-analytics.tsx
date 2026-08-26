@@ -4,6 +4,7 @@ import { useRef, useEffect } from "react";
 import { MapPin, Buildings, GithubLogo } from "@phosphor-icons/react";
 import { GitHubUser } from "@/lib/github";
 import { GITHUB_USERNAME, AVATAR_URL, LANG_COLORS } from "@/lib/constants";
+import RevealHeadline from "@/components/reveal-headline";
 
 export default function GitHubAnalytics({
   languages,
@@ -28,6 +29,7 @@ export default function GitHubAnalytics({
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("visible");
+            setTimeout(() => entry.target.classList.add("revealed"), 1200);
             const bars = entry.target.querySelectorAll<HTMLElement>("[data-bar]");
             bars.forEach((bar) => {
               const idx = Number(bar.getAttribute("data-bar"));
@@ -52,9 +54,10 @@ export default function GitHubAnalytics({
     <section ref={ref} className="py-28 sm:py-36 px-5 sm:px-6 relative z-10">
       <div className="max-w-6xl mx-auto">
         <div className="mb-14 sm:mb-20">
-          <h2 className="font-sans font-extrabold text-[clamp(2.25rem,6vw,4.5rem)] leading-[1.02] tracking-[-0.035em] text-text max-w-2xl text-balance">
-            Activity you can verify
-          </h2>
+          <RevealHeadline
+            text="Activity you can verify"
+            className="font-sans font-extrabold text-[clamp(2.25rem,6vw,4.5rem)] leading-[1.02] tracking-[-0.035em] text-text max-w-2xl"
+          />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">

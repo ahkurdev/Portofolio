@@ -107,16 +107,72 @@ body {
 
 .scroll-reveal {
   opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1), transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  transform: none;
+  filter: blur(0);
+  transition:
+    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    color 0.2s ease;
 }
 .js .scroll-reveal:not(.visible) {
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(56px) scale(0.985);
+  filter: blur(8px);
 }
 .scroll-reveal.visible {
   opacity: 1;
+  transform: none;
+  filter: blur(0);
+}
+.js .scroll-reveal.revealed {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.word-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+.js .reveal-words .word-inner {
+  display: inline-block;
+  transform: translateY(115%);
+  filter: blur(6px);
+  transition:
+    transform 0.95s cubic-bezier(0.19, 1, 0.22, 1),
+    filter 0.95s cubic-bezier(0.19, 1, 0.22, 1);
+  transition-delay: var(--wd, 0ms);
+  will-change: transform, filter;
+}
+.js .reveal-words.visible .word-inner {
   transform: translateY(0);
+  filter: blur(0);
+}
+
+.hero-letter {
+  display: inline-block;
+  transition:
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    color 0.35s ease,
+    -webkit-text-stroke-color 0.35s ease,
+    text-shadow 0.35s ease;
+  transition-delay: var(--hd, 0ms);
+}
+.line-outline .hero-letter {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(171, 155, 255, 0.6);
+}
+h1:hover .line-lift .hero-letter {
+  transform: translateY(-8px);
+}
+h1:hover .line-outline .hero-letter {
+  color: #ab9bff;
+  -webkit-text-stroke-color: rgba(196, 184, 255, 0.9);
+  text-shadow: 0 0 28px rgba(139, 118, 255, 0.35);
 }
 
 ::-webkit-scrollbar { width: 4px; }
@@ -141,6 +197,18 @@ section[id] { scroll-margin-top: 88px; }
   .scroll-reveal,
   .js .scroll-reveal:not(.visible) {
     opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  .js .reveal-words .word-inner {
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+
+  h1:hover .line-lift .hero-letter,
+  .hero-letter {
     transform: none !important;
   }
 }

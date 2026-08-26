@@ -4,6 +4,7 @@ import { useRef, useEffect } from "react";
 import { ArrowUpRight, Star } from "@phosphor-icons/react";
 import { ProjectItem } from "@/lib/github";
 import { GITHUB_USERNAME } from "@/lib/constants";
+import RevealHeadline from "@/components/reveal-headline";
 
 export default function Projects({ repos }: { repos: ProjectItem[] }) {
   const sectionRef = useRef<HTMLElement>(null);
@@ -17,7 +18,12 @@ export default function Projects({ repos }: { repos: ProjectItem[] }) {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
+            const el = entry.target as HTMLElement;
+            el.classList.add("visible");
+            setTimeout(() => {
+              el.style.transitionDelay = "0ms";
+              el.classList.add("revealed");
+            }, 1100);
             observer.unobserve(entry.target);
           }
         });
@@ -41,9 +47,10 @@ export default function Projects({ repos }: { repos: ProjectItem[] }) {
           <p className="font-mono text-xs text-primary-light tracking-[0.14em] uppercase mb-5">
             Selected work
           </p>
-          <h2 className="font-sans font-extrabold text-[clamp(2.25rem,6vw,4.5rem)] leading-[1.02] tracking-[-0.035em] text-text max-w-3xl text-balance">
-            Shipped products, open code
-          </h2>
+          <RevealHeadline
+            text="Shipped products, open code"
+            className="font-sans font-extrabold text-[clamp(2.25rem,6vw,4.5rem)] leading-[1.02] tracking-[-0.035em] text-text max-w-3xl"
+          />
         </div>
 
         <div className="border-b border-white/[0.06]">

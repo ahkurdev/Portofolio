@@ -36,11 +36,13 @@ export default function Home() {
 
     gsap.ticker.add(update);
     gsap.ticker.lagSmoothing(0);
+    (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
 
     return () => {
       document.documentElement.classList.remove("js");
       gsap.ticker.remove(update);
       lenis.destroy();
+      delete (window as unknown as { __lenis?: Lenis }).__lenis;
     };
   }, []);
 

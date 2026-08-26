@@ -13,6 +13,7 @@ import {
   EMAIL,
   LINKEDIN_URL,
 } from "@/lib/constants";
+import RevealHeadline from "@/components/reveal-headline";
 
 function MagneticLink({
   href,
@@ -74,6 +75,7 @@ export default function Contact() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("visible");
+            setTimeout(() => entry.target.classList.add("revealed"), 1200);
             observer.unobserve(entry.target);
           }
         });
@@ -92,12 +94,10 @@ export default function Contact() {
       className="py-32 sm:py-44 px-5 sm:px-6 relative z-10"
     >
       <div className="max-w-2xl mx-auto text-center">
-        <h2
-          data-reveal
-          className="scroll-reveal font-sans font-extrabold text-[clamp(2.5rem,7vw,5rem)] leading-[1.02] tracking-[-0.04em] text-text mb-6 text-balance"
-        >
-          Let&rsquo;s build something reliable
-        </h2>
+        <RevealHeadline
+          text="Let's build something reliable"
+          className="font-sans font-extrabold text-[clamp(2.5rem,7vw,5rem)] leading-[1.02] tracking-[-0.04em] text-text mb-6"
+        />
 
         <p
           data-reveal

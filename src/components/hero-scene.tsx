@@ -255,6 +255,7 @@ export default function HeroScene() {
 
     const timer = new THREE.Timer();
     let frame = 0;
+    let firstFrame = false;
 
     const renderFrame = () => {
       const delta = Math.min(timer.getDelta(), 0.05);
@@ -279,6 +280,11 @@ export default function HeroScene() {
         0.32 - scrollProgress * 0.15 + Math.sin(elapsed * 0.6) * 0.03;
 
       renderer.render(scene, camera);
+
+      if (!firstFrame) {
+        firstFrame = true;
+        window.dispatchEvent(new Event("portfolio:scene"));
+      }
     };
 
     if (prefersReducedMotion) {

@@ -140,6 +140,7 @@ export function useGitHub() {
         }
       } finally {
         if (!cancelled) setLoading(false);
+        window.dispatchEvent(new Event("portfolio:data"));
       }
     };
 
