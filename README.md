@@ -61,6 +61,3 @@ Real repositories, described from their own documentation:
 - GitHub: [@ahkurdev](https://github.com/ahkurdev)
 - LinkedIn: [Ahmad Kurniawan](https://www.linkedin.com/in/ahmad-kurniawan-0a6b42347)
 
----
-
-© Ahmad Kurniawan. All rights reserved.
